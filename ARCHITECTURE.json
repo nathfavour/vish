@@ -95,6 +95,9 @@
     "6_Ecosystem_Integrations": {
       "module": "anyisland & Developer Tooling",
       "responsibilities": [
+        "Auto-register with 'anyisland daemon' on startup via UDP port 1995",
+        "Perform 'Anyisland Pulse' handshake via Unix Domain Socket (~/.anyisland/anyisland.sock)",
+        "Show management status in the prompt",
         "Auto-suggest `anyisland install <pkg>` for missing commands",
         "Detect project context (e.g., Go, Rust, TypeScript) and adjust safety thresholds",
         "Provide a secure 'Man-in-the-Middle' pipeline for agentic CLI wrappers"

@@ -21,6 +21,21 @@ vish is a modern shell designed for security, performance, and AI integration.
 go build -o vish ./cmd/vish
 ```
 
+### Installation (via Anyisland)
+
+vish is designed to be distributed and managed by [Anyisland](https://github.com/nathfavour/anyisland).
+
+To install vish:
+```bash
+anyisland install github.com/nathfavour/vish
+```
+
+This will automatically:
+1. Fetch the source code.
+2. Build a statically linked binary using Go 1.21.
+3. Install it to your `PATH`.
+4. Enable "Pulse" OTA updates.
+
 ### Running
 
 ```bash
