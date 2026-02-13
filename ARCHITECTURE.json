@@ -1,0 +1,110 @@
+{
+  "project_name": "vish",
+  "tagline": "The Vibe Coders Shell",
+  "primary_language": "Go",
+  "core_philosophy": "Security by Default, Instant Performance, AI-Integrated Intent Analysis",
+  "architecture": {
+    "1_Frontend_UI": {
+      "module": "Prompt & Interface",
+      "libraries": [
+        "github.com/charmbracelet/bubbletea",
+        "github.com/charmbracelet/lipgloss"
+      ],
+      "responsibilities": [
+        "Render the custom 'vish ❯' prompt",
+        "Handle syntax highlighting for shell commands in real-time",
+        "Display dynamic 'Vibe Indicators' (e.g., color-coding prompt based on directory risk or AI audit status)",
+        "Provide semantic, intent-based tab-completion suggestions"
+      ],
+      "modes": [
+        "Interactive: Standard human-in-the-loop CLI usage",
+        "Agentic: JSON-streaming mode (--agent) optimized for AI tools like Auracrab"
+      ]
+    },
+    "2_Parser_Engine": {
+      "module": "AST Generation",
+      "libraries": [
+        "mvdan.cc/sh/v3/syntax",
+        "mvdan.cc/sh/v3/expand"
+      ],
+      "responsibilities": [
+        "Read raw input strings from the UI or incoming network pipes",
+        "Parse POSIX/Bash syntax into an Abstract Syntax Tree (AST)",
+        "Expand environment variables ($PATH, $USER) securely",
+        "Identify structural intent (e.g., pipes, loops, redirections) before execution"
+      ]
+    },
+    "3_Vibe_Auditor": {
+      "module": "Multi-Tier Security & Intent Check",
+      "responsibilities": [
+        "Intercept the AST before handing it to the Execution Engine",
+        "Block or prompt for confirmation on malicious or high-risk intents"
+      ],
+      "tiers": {
+        "Tier_1_Speed": {
+          "type": "Offline AOT Matching",
+          "mechanism": "Aho-Corasick Algorithm & Go Radix Trees",
+          "latency": "< 0.5ms",
+          "action": "Immediate block for known-bad raw byte signatures (e.g., obfuscated base64 piping)"
+        },
+        "Tier_2_Logic": {
+          "type": "Offline YARA & Heuristics",
+          "mechanism": "AST Traversal",
+          "latency": "~1-5ms",
+          "action": "Evaluate risk combinations (e.g., 'rm' + '-rf' + '/') and trigger 'Are you sure?' prompts"
+        },
+        "Tier_3_Intent": {
+          "type": "AI Agentic Check",
+          "mechanism": "Async vibeauracle integration (Local LLM or Cloud)",
+          "latency": "50ms - 200ms",
+          "action": "Deep semantic analysis of complex scripts. If flagged, sends SIGKILL to the active process"
+        }
+      }
+    },
+    "4_Execution_Engine": {
+      "module": "Process & OS Manager",
+      "libraries_unix": [
+        "os/exec",
+        "github.com/creack/pty"
+      ],
+      "libraries_windows": [
+        "github.com/charmbracelet/x/conpty"
+      ],
+      "responsibilities": [
+        "Spawn secure child processes for parsed commands",
+        "Manage Pseudo-Terminals (PTY for Linux/Mac, ConPTY for Windows)",
+        "Handle Job Control (SIGINT, SIGTERM, backgrounding via Ctrl+Z)",
+        "Enforce sandboxing (Linux Namespaces via SysProcAttr) for untrusted 'curl | sh' streams"
+      ]
+    },
+    "5_Immutable_History": {
+      "module": "Audit Trail & Cache",
+      "libraries": [
+        "modernc.org/sqlite"
+      ],
+      "responsibilities": [
+        "Log every executed command asynchronously via Goroutines to avoid UI blocking",
+        "Store contextual metadata: CWD, timestamp, exit code, and execution time",
+        "Store the 'Vibe Score' assigned by the Auditor",
+        "Provide Full-Text Search (FTS5) for instant retrieval of past commands"
+      ],
+      "features": [
+        "Incognito Mode: Bypass logging for sensitive sessions"
+      ]
+    },
+    "6_Ecosystem_Integrations": {
+      "module": "anyisland & Developer Tooling",
+      "responsibilities": [
+        "Auto-suggest `anyisland install <pkg>` for missing commands",
+        "Detect project context (e.g., Go, Rust, TypeScript) and adjust safety thresholds",
+        "Provide a secure 'Man-in-the-Middle' pipeline for agentic CLI wrappers"
+      ]
+    }
+  },
+  "cross_platform_compilation": {
+    "engine_unix.go": "//go:build linux || darwin",
+    "engine_windows.go": "//go:build windows",
+    "binary_type": "Statically linked, zero-dependency executable"
+  }
+}
+

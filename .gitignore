@@ -1,0 +1,24 @@
+# Binaries
+vish
+bin/
+
+# Dependency directories
+vendor/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Go test coverage
+*.out
+
+# SQLite
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
