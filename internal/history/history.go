@@ -18,7 +18,7 @@ func NewHistory(configDir string) (*History, error) {
 		return nil, err
 	}
 
-	// Create table if not exists
+	// Create table and index if not exists
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS history (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +26,8 @@ func NewHistory(configDir string) (*History, error) {
 			command TEXT,
 			cwd TEXT,
 			exit_code INTEGER
-		)
+		);
+		CREATE INDEX IF NOT EXISTS idx_history_command ON history(command);
 	`)
 	if err != nil {
 		return nil, err
@@ -35,15 +36,46 @@ func NewHistory(configDir string) (*History, error) {
 	return &History{db: db}, nil
 }
 
+func (h *History) Add(command, cwd string, exitCode int, key []byte) error {
+	finalCmd := command
+	if key != nil {
+		encrypted, err := crypto.Encrypt(key, command)
+		if err == nil {
+			finalCmd = "ENC:" + encrypted
+		}
+	}
+	_, err := h.db.Exec("INSERT INTO history (command, cwd, exit_code) VALUES (?, ?, ?)", finalCmd, cwd, exitCode)
+	return err
+}
+
+var (
+	hintCache     = make(map[string]string)
+	hintCacheSize = 100
+)
+
 func (h *History) GetLastCommandLike(prefix string) (string, error) {
 	if prefix == "" {
 		return "", nil
 	}
+
+	// Check cache
+	if cmd, ok := hintCache[prefix]; ok {
+		return cmd, nil
+	}
+
 	var command string
 	err := h.db.QueryRow("SELECT command FROM history WHERE command LIKE ? || '%' ORDER BY timestamp DESC LIMIT 1", prefix).Scan(&command)
 	if err != nil {
 		return "", err
 	}
+
+	// Simple cache management
+	if len(hintCache) > hintCacheSize {
+		// Clear cache if it gets too big (simple approach)
+		hintCache = make(map[string]string)
+	}
+	hintCache[prefix] = command
+
 	return command, nil
 }
 
