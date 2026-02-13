@@ -7,7 +7,7 @@
   "build": {
     "steps": [
       "mkdir -p bin",
-      "CGO_ENABLED=0 go build -ldflags='-s -w' -o bin/vish ./cmd/vish"
+      "CGO_ENABLED=0 go build -ldflags=-s\\ -w -o bin/vish ./cmd/vish"
     ],
     "bin": "bin/vish"
   },
