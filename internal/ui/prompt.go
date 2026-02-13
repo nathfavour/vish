@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"os"
+	"strings"
 	"vish/internal/ecosystem"
 
 	"github.com/charmbracelet/lipgloss"
@@ -13,6 +15,7 @@ var (
 	UnmanagedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
 )
 
+// GetPrompt returns the styled prompt string.
 func GetPrompt() string {
 	managed, _ := ecosystem.IsManaged()
 	status := ""
@@ -20,5 +23,16 @@ func GetPrompt() string {
 		status = ManagedStyle.Render(" (managed)")
 	}
 
-	return PromptStyle.Render("vish") + status + " " + ArrowStyle.Render("❯") + " "
+	cwd, _ := os.Getwd()
+	// Get last part of path
+	parts := strings.Split(cwd, "/")
+	dir := parts[len(parts)-1]
+	if dir == "" {
+		dir = "/"
+	}
+
+	// Dynamic color for the directory
+	dirStyle := GetColor(dir).Bold(true)
+
+	return PromptStyle.Render("vish") + status + " " + dirStyle.Render(dir) + " " + ArrowStyle.Render("❯") + " "
 }

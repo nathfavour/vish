@@ -38,7 +38,7 @@ This document serves as the primary instructional context and governance for all
 - `internal/ecosystem`: Anyisland Pulse/Daemon integration.
 
 ## 4. Operational Commands
-- **Build**: `mkdir -p bin && go build -o bin/vish ./cmd/vish`
+- **Build**: `mkdir -p bin && CGO_ENABLED=0 go build -ldflags=-s -ldflags=-w -o bin/vish ./cmd/vish`
 - **Run**: `./bin/vish`
 - **Test**: `go test ./...`
 - **Maintenance**: `go mod tidy && go mod edit -go=1.21`
