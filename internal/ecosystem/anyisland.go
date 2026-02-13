@@ -16,16 +16,28 @@ type HandshakeResponse struct {
 	AnyislandVersion string `json:"anyisland_version"`
 }
 
+var (
+	isManagedCached bool
+	handshakeCached *HandshakeResponse
+	lastCheck       time.Time
+)
+
 // IsManaged checks if vish is being managed by Anyisland via the Pulse handshake
 func IsManaged() (bool, *HandshakeResponse) {
+	if time.Since(lastCheck) < 30*time.Second && lastCheck.IsZero() == false {
+		return isManagedCached, handshakeCached
+	}
+
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return false, nil
 	}
 
 	socketPath := filepath.Join(home, ".anyisland", "anyisland.sock")
-	conn, err := net.DialTimeout("unix", socketPath, 2*time.Second)
+	conn, err := net.DialTimeout("unix", socketPath, 100*time.Millisecond) // Lower timeout
 	if err != nil {
+		lastCheck = time.Now()
+		isManagedCached = false
 		return false, nil
 	}
 	defer conn.Close()
@@ -44,7 +56,11 @@ func IsManaged() (bool, *HandshakeResponse) {
 		return false, nil
 	}
 
-	return resp.Status == "MANAGED", &resp
+	isManagedCached = resp.Status == "MANAGED"
+	handshakeCached = &resp
+	lastCheck = time.Now()
+
+	return isManagedCached, handshakeCached
 }
 
 // RegisterWithDaemon registers vish with the local Anyisland daemon via UDP
