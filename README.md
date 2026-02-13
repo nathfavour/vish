@@ -18,7 +18,8 @@ vish is a modern shell designed for security, performance, and AI integration.
 ### Building
 
 ```bash
-go build -o vish ./cmd/vish
+mkdir -p bin
+go build -o bin/vish ./cmd/vish
 ```
 
 ### Installation (via Anyisland)
@@ -39,5 +40,5 @@ This will automatically:
 ### Running
 
 ```bash
-./vish
+./bin/vish
 ```

@@ -6,9 +6,10 @@
   "toolchain": "go",
   "build": {
     "steps": [
-      "CGO_ENABLED=0 go build -ldflags=\"-s -w\" -o vish ./cmd/vish"
+      "mkdir -p bin",
+      "CGO_ENABLED=0 go build -ldflags=\"-s -w\" -o bin/vish ./cmd/vish"
     ],
-    "bin": "vish"
+    "bin": "bin/vish"
   },
   "runtime": {
     "pulse": true,
