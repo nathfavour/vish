@@ -3,18 +3,16 @@
   "version": "0.1.1",
   "description": "The Vibe Coders Shell - Security by Default, Instant Performance, AI-Integrated Intent Analysis",
   "repository": "github.com/nathfavour/vish",
-  "source_dir": "~/.vish/source",
-  "install_dir": "~/.local/bin",
+  "toolchain": "go",
   "build": {
     "steps": [
-      "make build"
+      "mkdir -p bin",
+      "CGO_ENABLED=0 go build -ldflags=-s -ldflags=-w -o bin/vish ./cmd/vish"
     ],
-    "bin": "bin/vish",
-    "toolchain": "go"
+    "bin": "bin/vish"
   },
   "runtime": {
     "pulse": true,
-    "daemon": true,
     "managed_updates": true
   }
 }
