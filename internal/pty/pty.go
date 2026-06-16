@@ -7,7 +7,7 @@ import (
 	"syscall"
 	"time"
 	"unsafe"
-	"vish/internal/spine"
+	"github.com/nathfavour/vish/internal/spine"
 
 	"golang.org/x/sys/unix"
 )

@@ -8,8 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"vish/internal/daemon"
-	"vish/internal/pty"
+	"github.com/nathfavour/vish/internal/daemon"
+	"github.com/nathfavour/vish/internal/pty"
 )
 
 func main() {

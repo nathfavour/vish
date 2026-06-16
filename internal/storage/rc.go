@@ -3,8 +3,8 @@ package storage
 import (
 	"os"
 	"path/filepath"
-	"vish/internal/config"
-	"vish/internal/crypto"
+	"github.com/nathfavour/vish/internal/config"
+	"github.com/nathfavour/vish/internal/crypto"
 )
 
 type RCManager struct {

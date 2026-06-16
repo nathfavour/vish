@@ -3,7 +3,7 @@ package history
 import (
 	"database/sql"
 	"path/filepath"
-	"vish/internal/crypto"
+	"github.com/nathfavour/vish/internal/crypto"
 	_ "modernc.org/sqlite"
 )
 

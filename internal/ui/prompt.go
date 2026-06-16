@@ -3,7 +3,7 @@ package ui
 import (
 	"os"
 	"strings"
-	"vish/internal/ecosystem"
+	"github.com/nathfavour/vish/internal/ecosystem"
 
 	"github.com/charmbracelet/lipgloss"
 )

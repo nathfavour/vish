@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"vish/internal/ui"
+	"github.com/nathfavour/vish/internal/ui"
 )
 
 // ColorizedWriter wraps an io.Writer to add dynamic color to lines
