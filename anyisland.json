@@ -6,13 +6,13 @@
   "toolchain": "go",
   "build": {
     "steps": [
-      "mkdir -p bin",
-      "CGO_ENABLED=0 go build -ldflags=-s -ldflags=-w -o bin/vish ./cmd/vish"
+      "make build"
     ],
     "bin": "bin/vish"
   },
   "runtime": {
     "pulse": true,
+    "daemon": true,
     "managed_updates": true
   }
 }
