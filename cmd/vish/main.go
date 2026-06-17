@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"github.com/nathfavour/tony/pkg/identity"
 	"github.com/nathfavour/vish/internal/daemon"
 	"github.com/nathfavour/vish/internal/pty"
 )
@@ -53,9 +54,15 @@ func runCommand(command string, args []string) {
 }
 
 func startShell() {
-	fmt.Println("vish: Agentic Hybrid Shell")
+	fmt.Println("vish: Agentic Hybrid Shell [Tony Kernel Active]")
 	fmt.Println("Type 'exit' to quit.")
 	
+	// Tony Kernel Initialization (Manned Master)
+	// In a real scenario, this seed would be loaded from secure storage
+	masterSeed := [32]byte{0xDE, 0xAD, 0xBE, 0xEF}
+	idManager := identity.NewManager(masterSeed)
+	_ = idManager
+
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("vish> ")
